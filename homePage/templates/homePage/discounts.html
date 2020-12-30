@@ -1,0 +1,20 @@
+{% extends 'base.html' %} {% load static %} {% block head%}
+<title>Discounts</title>
+<link rel="stylesheet" href="{% static 'css/all_data.css' %}" />
+{% endblock %} {% block content %}
+<div>
+  <h1>Discounts</h1>
+  <p>{{disc_num}} percent of users have discounts.</p>
+</div>
+<div class="plot">
+  {% for discount in data %}
+
+  <a class="block_ref" href="{{discount.discount_id}}">
+    <div class="block">
+      <h2>Type: {{discount.name}}</h2>
+      <h4>Percent of discount: {{discount.pecent_of_discount}}%</h4>
+    </div>
+  </a>
+  {% endfor %}
+</div>
+{% endblock %}

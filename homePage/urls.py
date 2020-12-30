@@ -1,0 +1,37 @@
+from django.urls import path
+from . import views
+
+
+urlpatterns = [
+    path('', views.IndexView.as_view(), name='index_url'),
+    path('All_Payments/', views.All_Payments.as_view(), name='all_payments_url'),
+    path('All_Payments/<int:id>/', views.Payment_info.as_view(), name='payment_url'),
+    path('All_Payments/<int:id>/delete/',
+         views.Payment_Delete.as_view(), name='payment_delete'),
+    path('Pay/', views.Pay.as_view(), name='pay_url'),
+    path('Create_Contract/',
+         views.Create_Contract.as_view(), name='create_contract_url'),
+    path('All_Payments/<int:id>/edit/',
+         views.Edit_Payment.as_view(), name='edit_payment_url'),
+    path('All_Contracts/', views.All_Contracts.as_view(), name='all_contracts_url'),
+    path('All_Contracts/<str:id>/',
+         views.Contract_info.as_view(), name='contract_url'),
+    path('All_Contracts/<str:id>/delete/',
+         views.Contract_Delete.as_view(), name='contract_delete'),
+    path('All_Contracts/<str:id>/edit/',
+         views.Edit_Contract.as_view(), name='contract_delete'),
+    path('Discounts/', views.Discounts_View.as_view(), name='discounts_url'),
+    path('Discounts/<int:id>/', views.Discount_View.as_view(), name='discount_url'),
+    path('Discounts/<int:id>/delete/',
+         views.Discount_Delete.as_view(), name='discount_delete_url'),
+    path('Discounts/<int:id>/edit/',
+         views.Discount_Edit.as_view(), name='edit_discount_url'),
+    path('Add_Discount/',
+         views.Discount_Add.as_view(), name='add_discount_url'),
+    path('All_Payments/<int:id>/Report/',
+         views.Make_Payment_Report.as_view(), name='payment_report_url'),
+    path('All_Contracts/<str:id>/Report/',
+         views.Make_Report_Contract.as_view(), name='contract_report_url'),
+    path('Automatization/',
+         views.Automatization.as_view(), name='automatization_url'),
+]

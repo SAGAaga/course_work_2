@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+<title>Pay</title>
+{% endblock %}
+
+{% block content %}
+
+<form action="{% url 'pay_url' %}" method="post" >
+    {% csrf_token %}
+
+    {% for field in form %}
+
+        <div>
+            {{ field.label }}
+            {{ field }}
+        </div>
+
+        {% if field.errors %}
+        <p>
+            {{field.errors}}
+        </p>
+        {% endif %}
+
+    {% endfor %}
+    <input type="submit" value="Pay"></input>
+</form>
+
+{% endblock %}

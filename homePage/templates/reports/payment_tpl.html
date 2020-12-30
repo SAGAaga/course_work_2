@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment report</title>
+  </head>
+  <body style="font-size: 20px">
+    <h1>Payment number {{payment.payment_id}}</h1>
+    <table>
+      <tr>
+        <td>User name</td>
+        <td>{{user.last_name}} {{user.first_name}}</td>
+      </tr>
+      <tr></tr>
+      <tr>
+        <td>Contract</td>
+        <td>{{payment.contract_number}}</td>
+      </tr>
+      <tr>
+        <td>Address</td>
+        <td>{{street}}</td>
+      </tr>
+      <tr>
+        <td>Summa</td>
+        <td>{{payment.summ}}</td>
+      </tr>
+      <tr>
+        <td>The date of payment</td>
+        <td>{{pay_date}}</td>
+      </tr>
+      <tr></tr>
+      <tr>
+        <td></td>
+        <td><b>Current data {{date}}</b></td>
+      </tr>
+    </table>
+  </body>
+</html>

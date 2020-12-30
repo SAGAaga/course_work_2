@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head%}
+<title>All payments</title>
+<link rel="stylesheet" href="{% static 'css/all_data.css' %}">
+{% endblock %}
+
+{% block content %}
+<h1>All payments</h1>
+<div class="plot">
+    {% for payment in data %}
+
+    <a class="block_ref" href="{{payment.payment_id}}">
+        <div class="block">
+            <h2>Contract: {{payment.contract_number_id}}</h2>
+            <h4>Payment number: {{payment.payment_id}}</h4>
+            <h3>Sum:{{payment.summ}}</h3>
+            <h4>Date: {{payment.pay_datetime}}</h4>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% endblock %}

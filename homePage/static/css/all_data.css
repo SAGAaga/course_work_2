@@ -1,0 +1,25 @@
+.head_data {
+  display: inline-block;
+}
+
+.plot {
+  max-width: 90%;
+  width: max-content;
+  background-color: rgb(176, 228, 152);
+  align-items: center;
+}
+.block {
+  display: inline-block;
+  margin: 12px;
+  margin-top: 5px;
+  padding: 10px;
+  background-color: rgb(101, 119, 221);
+  width: 290px;
+}
+.block:hover {
+  opacity: 0.8;
+}
+
+.block_ref {
+  color: black;
+}

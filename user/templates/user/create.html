@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h1>Sign Up</h1>
+
+
+    <form action="{% url 'create_user_url' %}" method="post" >
+        {% csrf_token %}
+
+        {% for field in form %}
+
+            <div>
+                {{ field.label }}
+                {{ field }}
+            </div>
+
+            {% if field.errors %}
+            <div>
+                {{field.errors}}
+            </div>
+            {% endif %}
+
+        {% endfor %}
+        <input type="submit" value="Rgestrate"></input>
+    </form>
+
+{% endblock %}

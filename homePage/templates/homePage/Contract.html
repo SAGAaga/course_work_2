@@ -1,0 +1,15 @@
+{% extends 'base.html' %} {% load static %} {% block head %}
+<title>Contract {{contract.contract_number}}</title>
+<link rel="stylesheet" href="{% static 'css/data.css' %}" />
+{% endblock %} {% block content %}
+
+<div class="block">
+  <h2>Contract number {{contract.contract_number}}</h2>
+  <h3>Is activ to {{contract.term}}</h3>
+  <h3>Accomodation {{contract.accomodation.address}}</h3>
+</div>
+<button onclick="window.location.href='delete'">Delete</button>
+<button onclick="window.location.href='edit'">Edit or Prolong</button>
+<button onclick="window.location.href='Report'">Get Report</button>
+
+{% endblock %}

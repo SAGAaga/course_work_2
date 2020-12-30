@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Automatization</title>
+  </head>
+  <body style="font-size: 10px">
+    <table>
+      <tr>
+        <th></th>
+        {% for month in monthes %}
+        <th>{{month}}</th>
+        {% endfor %}
+      </tr>
+      {% for row in trow %}
+      <tr>
+        {% for elm in row %}
+        <td>{{elm}}</td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+
+      <tr>
+        <td colspan="10"></td>
+        <td colspan="3"><b>Current data {{date}}</b></td>
+      </tr>
+    </table>
+  </body>
+</html>
