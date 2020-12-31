@@ -44,10 +44,13 @@ class IndexView(LoginRequiredMixin, View):
             more_or_actually = 'more then one'
 
         all_user_contracts = self.get_All_Contracts(request)['data']
+        all_user_payments = self.get_All_Payments(request)['data']
 
         context = {
             'single_accomodation': contract_for_accomodation,
-            'more_or_actually': more_or_actually, 'all_user_contracts': all_user_contracts}
+            'more_or_actually': more_or_actually,
+            'all_user_contracts': all_user_contracts,
+            'all_user_payments': all_user_payments}
         return render(request, 'homePage/HomePage.html', context=context)
 
     def get_All_Contracts(self, request):
@@ -69,6 +72,25 @@ class IndexView(LoginRequiredMixin, View):
             avg_sq = 0
         context = {'data': all_user_contracts,
                    'term_data': num, 'avg_squer': avg_sq}
+        return context
+
+    def get_All_Payments(self, request):
+        payments_list = []
+        all_user_contracts = User.objects.get(
+            username=request.user.username).contract_set.all()
+
+        for contract in all_user_contracts:
+            payments = contract.payments_set.all()
+            payments_list.append(payments)
+        try:
+            all_payments = payments_list[0]
+        except IndexError as err:
+            all_payments = []
+
+        for payment in payments_list:
+            all_payments = all_payments | payment
+
+        context = {'data': all_payments}
         return context
 
 
