@@ -1,12 +1,21 @@
-.data-section {
+.row-section {
   display: flex;
   flex-direction: row;
 }
 
+section {
+  margin: 0;
+  padding: 0;
+}
+
 .table-section {
-  max-width: 50%;
+  max-width: 45%;
   width: max-content;
   margin: 50px 25px 30px 25px;
+}
+
+#discounts {
+  max-width: 30%;
 }
 
 table {

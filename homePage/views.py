@@ -45,12 +45,15 @@ class IndexView(LoginRequiredMixin, View):
 
         all_user_contracts = self.get_All_Contracts(request)['data']
         all_user_payments = self.get_All_Payments(request)['data']
+        all_user_discounts = self.get_All_Discounts(request)['data']
 
         context = {
             'single_accomodation': contract_for_accomodation,
             'more_or_actually': more_or_actually,
             'all_user_contracts': all_user_contracts,
-            'all_user_payments': all_user_payments}
+            'all_user_payments': all_user_payments,
+            'all_user_discounts': all_user_discounts,
+        }
         return render(request, 'homePage/HomePage.html', context=context)
 
     def get_All_Contracts(self, request):
@@ -93,40 +96,17 @@ class IndexView(LoginRequiredMixin, View):
         context = {'data': all_payments}
         return context
 
-
-class All_Payments(LoginRequiredMixin, View):
-    login_url = reverse_lazy('login_url')
-
-    def get(self, request):
-        payments_list = []
-        all_user_contracts = User.objects.get(
-            username=request.user.username).contract_set.all()
-
-        for contract in all_user_contracts:
-            payments = contract.payments_set.all()
-            payments_list.append(payments)
-        try:
-            all_payments = payments_list[0]
-        except IndexError as err:
-            all_payments = []
-
-        for payment in payments_list:
-            all_payments = all_payments | payment
-
-        #contracts = []
-        # for contract in all_user_contracts:
-            # contracts.append(contract.contract_number)
-        #all_payments = Payments.objects.filter(contract_number__in=contracts)
-
-        return render(request, 'homePage/All_Payments.html', context={'data': all_payments})
-
-
-class Payment_info(LoginRequiredMixin, View):
-    login_url = reverse_lazy('login_url')
-
-    def get(self, request, id):
-        payment = Payments.objects.get(payment_id=id)
-        return render(request, 'homePage/Payment.html', context={'payment': payment})
+    def get_All_Discounts(self, request):
+        discounts = User.objects.get(
+            username=request.user.username).discount_set.all()
+        disc_num = set()
+        users_disc = Client_Discount.objects.all()
+        for user in users_disc:
+            disc_num.add(user.user)
+        ln = len(disc_num)*100
+        disc_num = ln/User.objects.all().count()
+        context = {'data': discounts, 'disc_num': disc_num}
+        return context
 
 
 class Payment_Delete(LoginRequiredMixin, View):
@@ -135,7 +115,7 @@ class Payment_Delete(LoginRequiredMixin, View):
     def get(self, request, id):
         payment = Payments.objects.get(payment_id=id)
         payment.delete()
-        return redirect('all_payments_url')
+        return redirect('index_url')
 
 
 class Edit_Payment(LoginRequiredMixin, View):
@@ -157,41 +137,9 @@ class Edit_Payment(LoginRequiredMixin, View):
             payment.contract_number = Contract.objects.get(
                 contract_number=request.POST['contract_number'])
             payment.save()
-            return redirect('all_payments_url')
+            return redirect('index_url')
         else:
             return render(request, 'homePage/edit.html', context={'form': boundform})
-
-
-class All_Contracts(LoginRequiredMixin, View):
-    login_url = reverse_lazy('login_url')
-
-    def get(self, request):
-        all_user_contracts = User.objects.get(
-            username=request.user.username).contract_set.all().filter(is_activ=True)
-        num = all_user_contracts.filter(term__year__lt=datetime.now().year).filter(
-            term__month__lt=datetime.now().month).count()
-        avg_sq = []
-        for acc in all_user_contracts:
-            temp = acc.accomodation.contract_set.all().count()
-            if temp > 1:
-                avg_sq.append(acc.accomodation)
-        count = 0
-        for acc in avg_sq:
-            count += acc.squeare
-        if len(avg_sq):
-            avg_sq = count/len(avg_sq)
-        else:
-            avg_sq = 0
-        return render(request, 'homePage/All_Contracts.html',
-                      context={'data': all_user_contracts, 'term_data': num, 'avg_squer': avg_sq})
-
-
-class Contract_info(LoginRequiredMixin, View):
-    login_url = reverse_lazy('login_url')
-
-    def get(self, request, id):
-        contract = Contract.objects.get(contract_number=id)
-        return render(request, 'homePage/Contract.html', context={'contract': contract})
 
 
 class Contract_Delete(LoginRequiredMixin, View):
@@ -201,7 +149,7 @@ class Contract_Delete(LoginRequiredMixin, View):
         contract = Contract.objects.get(contract_number=id)
         contract.is_activ = False
         contract.save()
-        return redirect('all_contracts_url')
+        return redirect('index_url')
 
 
 class Edit_Contract(LoginRequiredMixin, View):
@@ -218,18 +166,18 @@ class Edit_Contract(LoginRequiredMixin, View):
         user = User.objects.get(username=request.user.username)
         boundform = Contract_form(request.POST)
         contract = Contract.objects.get(contract_number=id)
-        if request.POST['contract_number'] == id:
+        if boundform.is_valid():
             contract.accomodation = Accomodation.objects.get(
                 accomodation_id=request.POST['accomodation'])
             contract.contract_number = request.POST['contract_number']
             contract.save()
-            return redirect('all_contracts_url')
-        elif boundform.is_valid():
+            return redirect('index_url')
+        elif request.POST['contract_number'] == id:
             contract.accomodation = Accomodation.objects.get(
                 accomodation_id=request.POST['accomodation'])
             contract.contract_number = request.POST['contract_number']
             contract.save()
-            return redirect('all_contracts_url')
+            return redirect('index_url')
         else:
             return render(request, 'homePage/edit.html', context={'form': boundform})
 
@@ -252,33 +200,9 @@ class Create_Contract(LoginRequiredMixin, View):
                 contract_number=request.POST['contract_number'],
                 user=user)
             contract.save()
-            return redirect('all_contracts_url')
+            return redirect('index_url')
         else:
             return render(request, 'homePage/edit.html', context={'form': boundform})
-
-
-class Discounts_View(LoginRequiredMixin, View):
-    login_url = reverse_lazy('login_url')
-
-    def get(self, request):
-        discounts = User.objects.get(
-            username=request.user.username).discount_set.all()
-        disc_num = set()
-        users_disc = Client_Discount.objects.all()
-        for user in users_disc:
-            disc_num.add(user.user)
-        ln = len(disc_num)*100
-        disc_num = ln/User.objects.all().count()
-        return render(request, 'homePage/discounts.html', context={'data': discounts, 'disc_num': disc_num})
-
-
-class Discount_View(LoginRequiredMixin, View):
-    login_url = reverse_lazy('login_url')
-
-    def get(self, request, id):
-        discount = User.objects.get(
-            username=request.user.username).discount_set.all().get(discount_id=id)
-        return render(request, 'homePage/discount.html', context={'discount': discount})
 
 
 class Discount_Delete(LoginRequiredMixin, View):
@@ -288,7 +212,7 @@ class Discount_Delete(LoginRequiredMixin, View):
         discount = User.objects.get(
             username=request.user.username).discount_set.all().get(discount_id=id)
         discount.delete()
-        return redirect('discounts_url')
+        return redirect('index_url')
 
 
 class Discount_Edit(LoginRequiredMixin, View):
@@ -309,7 +233,7 @@ class Discount_Edit(LoginRequiredMixin, View):
             discount.pecent_of_discount = request.POST['pecent_of_discount']
             discount.name = request.POST['name']
             discount.save()
-            return redirect('discounts_url')
+            return redirect('index_url')
         else:
             return render(request, 'homePage/edit.html', context={'form': boundform})
 
@@ -331,7 +255,7 @@ class Discount_Add(LoginRequiredMixin, View):
                 name=request.POST['name'])
             discount.save()
             discount.user.add(user)
-            return redirect('discounts_url')
+            return redirect('index_url')
         else:
             return render(request, 'homePage/edit.html', context={'form': boundform})
 
@@ -349,7 +273,7 @@ class Pay(LoginRequiredMixin, View):
         boundform = Pay_form(request.POST, user=user)
         if boundform.is_valid():
             new_payment = boundform.save()
-            return redirect('payment_report_url', id=new_payment.payment_id)
+            return redirect('index_url', id=new_payment.payment_id)
         else:
             return render(request, 'homePage/pay.html', context={'form': boundform})
 

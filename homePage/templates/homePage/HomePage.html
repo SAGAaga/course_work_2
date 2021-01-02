@@ -11,7 +11,7 @@
   means that some accomodations has {{more_or_actually}} contract and owner
 </div>
 <section>
-  <section class="data-section">
+  <section class="row-section">
     <section class="table-section" id="contracts">
       <!--for demo wrap-->
       <h1>All User Contracts</h1>
@@ -20,7 +20,7 @@
           <thead>
             <tr>
               <th colspan="2">Contract Number</th>
-              <th colspan="3">Accomodation</th>
+              <th colspan="2">Accomodation</th>
               <th colspan="2">Is Active To</th>
               <th colspan="3">
                 <button onclick="window.location.href='Create_Contract/'">
@@ -37,23 +37,23 @@
             {% for contract in all_user_contracts %}
             <tr>
               <td colspan="2">{{contract.contract_number}}</td>
-              <td colspan="3">{{contract.accomodation.address}}</td>
+              <td colspan="2">{{contract.accomodation.address}}</td>
               <td colspan="2">{{contract.term}}</td>
               <td colspan="3">
                 <button
-                  onclick="window.location.href='All_Payments/{{payment.payment_id}}/delete'"
+                  onclick="window.location.href='All_Contracts/{{contract.contract_number}}/delete'"
                 >
                   Delete
                 </button>
 
                 <button
-                  onclick="window.location.href='All_Payments/{{payment.payment_id}}/edit'"
+                  onclick="window.location.href='All_Contracts/{{contract.contract_number}}/edit'"
                 >
                   Edit
                 </button>
 
                 <button
-                  onclick="window.location.href='All_Payments/{{payment.payment_id}}/Report'"
+                  onclick="window.location.href='All_Contracts/{{contract.contract_number}}/Report'"
                 >
                   Get Report
                 </button>
@@ -119,19 +119,18 @@
     </section>
   </section>
 
-  <section class="data-section">
-    <section class="table-section" id="contracts">
+  <section class="row-section">
+    <section class="table-section" id="discounts">
       <!--for demo wrap-->
-      <h1>All User Contracts</h1>
+      <h1>All User Discounts</h1>
       <div class="tbl-header">
         <table cellpadding="0" cellspacing="0" border="0">
           <thead>
             <tr>
-              <th colspan="2">Contract Number</th>
-              <th colspan="3">Accomodation</th>
-              <th colspan="2">Is Active To</th>
-              <th colspan="3">
-                <button onclick="window.location.href='Create_Contract/'">
+              <th colspan="2">Type</th>
+              <th colspan="2">Discount percentage</th>
+              <th colspan="2">
+                <button onclick="window.location.href='Add_Discount/'">
                   Add
                 </button>
               </th>
@@ -142,81 +141,21 @@
       <div class="tbl-content">
         <table cellpadding="0" cellspacing="0" border="0">
           <tbody>
-            {% for contract in all_user_contracts %}
+            {% for discount in all_user_discounts %}
             <tr>
-              <td colspan="2">{{contract.contract_number}}</td>
-              <td colspan="3">{{contract.accomodation.address}}</td>
-              <td colspan="2">{{contract.term}}</td>
-              <td colspan="3">
+              <td colspan="2">{{discount.name}}</td>
+              <td colspan="2">{{discount.pecent_of_discount}} %</td>
+              <td colspan="2">
                 <button
-                  onclick="window.location.href='All_Payments/{{payment.payment_id}}/delete'"
+                  onclick="window.location.href='Discounts/{{discount.discount_id}}/delete'"
                 >
                   Delete
                 </button>
 
                 <button
-                  onclick="window.location.href='All_Payments/{{payment.payment_id}}/edit'"
+                  onclick="window.location.href='Discounts/{{discount.discount_id}}/edit'"
                 >
                   Edit
-                </button>
-
-                <button
-                  onclick="window.location.href='All_Payments/{{payment.payment_id}}/Report'"
-                >
-                  Get Report
-                </button>
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="table-section" id="payments">
-      <!--for demo wrap-->
-      <h1>Payments</h1>
-      <div class="tbl-header">
-        <table cellpadding="0" cellspacing="0" border="0">
-          <thead>
-            <tr>
-              <th colspan="3">Contract</th>
-              <th colspan="3">Payment number</th>
-              <th colspan="3">Sum</th>
-              <th colspan="5">Date</th>
-              <th colspan="6">
-                <button onclick="window.location.href='Pay/'">Add</button>
-              </th>
-            </tr>
-          </thead>
-        </table>
-      </div>
-      <div class="tbl-content">
-        <table cellpadding="0" cellspacing="0" border="0">
-          <tbody>
-            {% for payment in all_user_payments %}
-            <tr>
-              <td colspan="3">{{payment.contract_number_id}}</td>
-              <td colspan="3">{{payment.payment_id}}</td>
-              <td colspan="3">{{payment.summ}}</td>
-              <td colspan="5">{{payment.pay_datetime}}</td>
-              <td colspan="6">
-                <button
-                  onclick="window.location.href='All_Payments/{{payment.payment_id}}/delete'"
-                >
-                  Delete
-                </button>
-
-                <button
-                  onclick="window.location.href='All_Payments/{{payment.payment_id}}/edit'"
-                >
-                  Edit
-                </button>
-
-                <button
-                  onclick="window.location.href='All_Payments/{{payment.payment_id}}/Report'"
-                >
-                  Get Report
                 </button>
               </td>
             </tr>
