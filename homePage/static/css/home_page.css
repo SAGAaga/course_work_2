@@ -9,7 +9,7 @@ section {
 }
 
 .table-section {
-  max-width: 45%;
+  /*flex-grow: 1;*/
   width: max-content;
   margin: 50px 25px 30px 25px;
 }
@@ -26,7 +26,7 @@ table {
   background-color: rgba(255, 255, 255, 0.3);
 }
 .tbl-content {
-  height: 220px;
+  height: 223px;
   overflow-x: auto;
   margin-top: 0px;
   border: 1px solid rgba(255, 255, 255, 0.3);

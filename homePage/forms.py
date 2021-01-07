@@ -19,7 +19,6 @@ class Pay_form(ModelForm):
 
 class Contract_form(ModelForm):
     def __init__(self, *args, **kwargs):
-        user = kwargs.pop('user', None)
         super(Contract_form, self).__init__(*args, **kwargs)
 
     class Meta:
@@ -29,10 +28,29 @@ class Contract_form(ModelForm):
 
 class Discount_form(ModelForm):
     def __init__(self, *args, **kwargs):
-        user = kwargs.pop('user', None)
         super(Discount_form, self).__init__(*args, **kwargs)
 
     class Meta:
         model = Discount
         exclude = ('discount_id', 'user')
         #fields = ['name', 'pecent_of_discount']
+
+
+class Accomodation_form(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(Accomodation_form, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = Accomodation
+        fields = ['address', 'squeare']
+
+
+class Status_form(ModelForm):
+    def __init__(self, *args, **kwargs):
+        accomodation_set = kwargs.pop('accomodation', None)
+        super(Status_form, self).__init__(*args, **kwargs)
+        self.fields['accomodation_id'].queryset = accomodation_set
+
+    class Meta:
+        model = Status
+        fields = ['consumed', 'accomodation_id']

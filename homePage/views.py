@@ -22,7 +22,7 @@ from django.core.files import File
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-#from django.core.mail import EmailMessage
+# from django.core.mail import EmailMessage
 from email.message import EmailMessage
 import mimetypes
 import smtplib
@@ -46,6 +46,11 @@ class IndexView(LoginRequiredMixin, View):
         all_user_contracts = self.get_All_Contracts(request)['data']
         all_user_payments = self.get_All_Payments(request)['data']
         all_user_discounts = self.get_All_Discounts(request)['data']
+        all_user_accomodation = self.get_All_Accomodation(request)['data']
+        current_status = self.get_Editional_Status(request)['data']
+
+        all_user_accomodation_status = zip(
+            all_user_accomodation, current_status)
 
         context = {
             'single_accomodation': contract_for_accomodation,
@@ -53,12 +58,22 @@ class IndexView(LoginRequiredMixin, View):
             'all_user_contracts': all_user_contracts,
             'all_user_payments': all_user_payments,
             'all_user_discounts': all_user_discounts,
+            'all_user_accomodation_status': all_user_accomodation_status,
+
         }
         return render(request, 'homePage/HomePage.html', context=context)
 
     def get_All_Contracts(self, request):
         all_user_contracts = User.objects.get(
+            username=request.user.username).contract_set.all()
+        not_activ = all_user_contracts.filter(term__year__lte=datetime.now().year).filter(
+            term__month__lte=datetime.now().month).filter(term__day__lt=datetime.now().day)
+        for contract in not_activ:
+            contract.is_activ = False
+            contract.save()
+        all_user_contracts = User.objects.get(
             username=request.user.username).contract_set.all().filter(is_activ=True)
+
         num = all_user_contracts.filter(term__year__lt=datetime.now().year).filter(
             term__month__lt=datetime.now().month).count()
         avg_sq = []
@@ -107,6 +122,43 @@ class IndexView(LoginRequiredMixin, View):
         disc_num = ln/User.objects.all().count()
         context = {'data': discounts, 'disc_num': disc_num}
         return context
+
+    def get_All_Accomodation(self, request):
+        all_user_contracts = User.objects.get(
+            username=request.user.username).contract_set.all()
+        accomodation_set = set()
+        for contarct in all_user_contracts:
+            accomodation_set.add(contarct.accomodation)
+
+        accomodation_set = list(accomodation_set)
+        context = {'data': accomodation_set}
+        return context
+
+    def get_Editional_Status(self, request):
+        current_status = []
+        accomodation_set = self.get_All_Accomodation(request)['data']
+        for accomodation in accomodation_set:
+            temp = accomodation.status_set.all().order_by('status_id').last()
+            if temp:
+                current_status.append(temp)
+            else:
+                current_status.append(0)
+        context = {'data': current_status}
+        return context
+
+
+class Transfer_new_data(LoginRequiredMixin, View):
+    login_url = reverse_lazy('login_url')
+
+    def get(self, request):
+        accomodation_id = []
+        accomodations = IndexView().get_All_Accomodation(request)['data']
+        for accomodation in accomodations:
+            accomodation_id.append(accomodation.accomodation_id)
+        accomodation_q = Accomodation.objects.all().filter(
+            accomodation_id__in=accomodation_id)
+        form = Status_form(accomodation=accomodation_q)
+        return render(request, 'homePage/edit.html', context={'form': form})
 
 
 class Payment_Delete(LoginRequiredMixin, View):
@@ -273,9 +325,59 @@ class Pay(LoginRequiredMixin, View):
         boundform = Pay_form(request.POST, user=user)
         if boundform.is_valid():
             new_payment = boundform.save()
-            return redirect('index_url', id=new_payment.payment_id)
+            return redirect('index_url')
         else:
             return render(request, 'homePage/pay.html', context={'form': boundform})
+
+
+class Accomodation_Delete(LoginRequiredMixin, View):
+    login_url = reverse_lazy('login_url')
+
+    def get(self, request, id):
+        accomodation = Accomodation.objects.get(accomodation_id=id)
+        accomodation.delete()
+        return redirect('index_url')
+
+
+class Accomodation_Edit(LoginRequiredMixin, View):
+    login_url = reverse_lazy('login_url')
+
+    def get(self, request, id):
+        accomodation = Accomodation.objects.get(accomodation_id=id)
+        form = Accomodation_form(
+            initial={'address': accomodation.address, 'squeare': accomodation.squeare})
+        return render(request, 'homePage/edit.html', context={'form': form})
+
+    def post(self, request, id):
+        accomodation = Accomodation.objects.get(accomodation_id=id)
+        boundform = Accomodation_form(request.POST)
+        if boundform.is_valid():
+            accomodation.address = request.POST['address']
+            accomodation.squeare = request.POST['squeare']
+            accomodation.save()
+            return redirect('index_url')
+        else:
+            return render(request, 'homePage/edit.html', context={'form': boundform})
+
+
+class Accomodation_Add(LoginRequiredMixin, View):
+    login_url = reverse_lazy('login_url')
+
+    def get(self, request):
+        form = Accomodation_form()
+        return render(request, 'homePage/edit.html', context={'form': form})
+
+    def post(self, request):
+        boundform = Accomodation_form(request.POST)
+        if boundform.is_valid():
+            accomodation = Accomodation(
+                address=request.POST['address'],
+                squeare=request.POST['squeare']
+            )
+            accomodation.save()
+            return redirect('index_url')
+        else:
+            return render(request, 'homePage/edit.html', context={'form': boundform})
 
 
 class Make_Payment_Report(LoginRequiredMixin, View):
@@ -323,7 +425,7 @@ def render_to_pdf(template_src, content_dict={}):
     result = io.BytesIO()
     pdf = pisa.pisaDocument(io.BytesIO(html.encode('ISO-8859-1')), result)
     if not pdf.err:
-        #spdf = result.getvalue().decode('windows-1252').encode("utf-8")
+        # spdf = result.getvalue().decode('windows-1252').encode("utf-8")
         filename = 'mypdf.pdf'
         with open(filename, 'wb') as f:
             f.write(result.getvalue())
@@ -334,7 +436,7 @@ def render_to_pdf(template_src, content_dict={}):
         msg['From'] = 'ringoosringoo123@gmail.com'
         msg['To'] = 'nikita.sahaidachnyi@nure.ua'
 
-        #msg.set_content('This is a plain text email')
+        # msg.set_content('This is a plain text email')
 
         msg.add_attachment(result.getvalue(), maintype='application',
                            subtype='octet-stream', filename=filename)

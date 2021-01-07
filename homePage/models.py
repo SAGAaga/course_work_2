@@ -23,7 +23,8 @@ class Status(models.Model):
     debt = models.IntegerField(default=0, validators=[MinValueValidator(0)])
     prepayment = models.IntegerField(
         default=0, validators=[MinValueValidator(0)])
-    accomodation_id = models.OneToOneField(
+    date_in = models.DateTimeField(auto_now_add=True)
+    accomodation_id = models.ForeignKey(
         Accomodation, on_delete=models.CASCADE)
 
 

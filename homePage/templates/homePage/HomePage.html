@@ -120,7 +120,7 @@
   </section>
 
   <section class="row-section">
-    <section class="table-section" id="discounts">
+    <section class="table-section" id="discounts" style="flex-grow: 1">
       <!--for demo wrap-->
       <h1>All User Discounts</h1>
       <div class="tbl-header">
@@ -154,6 +154,69 @@
 
                 <button
                   onclick="window.location.href='Discounts/{{discount.discount_id}}/edit'"
+                >
+                  Edit
+                </button>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="table-section" id="accomodation" style="flex-grow: 2">
+      <!--for demo wrap-->
+      <h1>All User Accomodation</h1>
+      <div class="tbl-header">
+        <table cellpadding="0" cellspacing="0" border="0">
+          <thead>
+            <tr>
+              <th colspan="2">Address</th>
+              <th colspan="1">Squeare</th>
+              <th colspan="1">consumed</th>
+              <th colspan="2">Last date</th>
+              <th colspan="1">Debt</th>
+              <th colspan="1">Prepayment</th>
+              <th colspan="2">
+                <button onclick="window.location.href='Add_Accomodation/'">
+                  Add
+                </button>
+              </th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+
+      <div class="tbl-content">
+        <table cellpadding="0" cellspacing="0" border="0">
+          <tbody>
+            {% for accomodation,status in all_user_accomodation_status %}
+            <tr>
+              <td colspan="2">{{accomodation.address}}</td>
+              <td colspan="1">{{accomodation.squeare}}</td>
+              {% if status %}
+              <td colspan="1">{{status.consumed}}</td>
+              <td colspan="2">{{status.date_in}}</td>
+              <td colspan="1">{{status.debt}}</td>
+              <td colspan="1">{{status.prepayment}}</td>
+              {% else %}
+
+              <td colspan="1">{{status}}</td>
+              <td colspan="2">MM. DD, YYYY, h:m</td>
+              <td colspan="1">{{status}}</td>
+              <td colspan="1">{{status}}</td>
+
+              {% endif %}
+              <td colspan="2">
+                <button
+                  onclick="window.location.href='Accomodation/{{accomodation.accomodation_id}}/delete'"
+                >
+                  Delete
+                </button>
+
+                <button
+                  onclick="window.location.href='Accomodation/{{accomodation.accomodation_id}}/edit'"
                 >
                   Edit
                 </button>
