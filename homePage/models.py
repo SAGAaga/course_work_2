@@ -16,24 +16,23 @@ class Accomodation(models.Model):
         return self.address
 
 
-class Status(models.Model):
-    status_id = models.AutoField(primary_key=True)
-    # in current month
-    consumed = models.IntegerField(validators=[MinValueValidator(0)])
-    debt = models.IntegerField(default=0, validators=[MinValueValidator(0)])
-    prepayment = models.IntegerField(
-        default=0, validators=[MinValueValidator(0)])
-    date_in = models.DateTimeField(auto_now_add=True)
-    accomodation_id = models.ForeignKey(
-        Accomodation, on_delete=models.CASCADE)
-
-
 def getDateTime():
     return datetime.now()
 
 
 def getTerm(term=6):
     return datetime.now().date()+relativedelta(months=term)
+
+
+class Status(models.Model):
+    status_id = models.AutoField(primary_key=True)
+    consumed = models.IntegerField(validators=[MinValueValidator(0)])
+    debt = models.IntegerField(default=0, validators=[MinValueValidator(0)])
+    prepayment = models.IntegerField(
+        default=0, validators=[MinValueValidator(0)])
+    date_in = models.DateTimeField(default=getDateTime())
+    accomodation_id = models.ForeignKey(
+        Accomodation, on_delete=models.CASCADE)
 
 
 class Contract (models.Model):
@@ -59,7 +58,7 @@ class Tarif(models.Model):
     bottom_line = models.IntegerField(validators=[MinValueValidator(0)])
     top_line = models.IntegerField(validators=[MinValueValidator(0)])
     price = models.IntegerField(validators=[MinValueValidator(1)])
-    accomodation = models.ManyToManyField(
+    accomodation = models.ManyToManyField(  # maybe is unnecessary
         Status, through='Tarif_Status', through_fields=('tarif_id', 'status_id'))
 
     def __str__(self):

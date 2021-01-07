@@ -138,7 +138,7 @@ class IndexView(LoginRequiredMixin, View):
         current_status = []
         accomodation_set = self.get_All_Accomodation(request)['data']
         for accomodation in accomodation_set:
-            temp = accomodation.status_set.all().order_by('status_id').last()
+            temp = accomodation.status_set.all().order_by('date_in').last()
             if temp:
                 current_status.append(temp)
             else:
@@ -159,6 +159,22 @@ class Transfer_new_data(LoginRequiredMixin, View):
             accomodation_id__in=accomodation_id)
         form = Status_form(accomodation=accomodation_q)
         return render(request, 'homePage/edit.html', context={'form': form})
+
+    def post(self, request):
+        accomodation_id = []
+        accomodations = IndexView().get_All_Accomodation(request)['data']
+        for accomodation in accomodations:
+            accomodation_id.append(accomodation.accomodation_id)
+        accomodation_q = Accomodation.objects.all().filter(
+            accomodation_id__in=accomodation_id)
+
+        boundform = Status_form(request.POST, accomodation=accomodation_q)
+        if boundform.is_valid():
+            user = User.objects.get(id=request.user.id)
+            new_status = boundform.save(user=user)
+            return redirect('index_url')
+        else:
+            return render(request, 'homePage/edit.html', context={'form': boundform})
 
 
 class Payment_Delete(LoginRequiredMixin, View):

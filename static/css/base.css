@@ -4,6 +4,10 @@
 body {
   background: -webkit-linear-gradient(left, #25c481, #25b7c4);
   background: linear-gradient(to right, #25c481, #25b7c4);
+  /*
+  background: -webkit-linear-gradient(left, #a3486e, #ac225c);
+  background: linear-gradient(to right, #912948, #a51f2a);
+*/
   font-family: "Roboto", sans-serif;
 }
 
