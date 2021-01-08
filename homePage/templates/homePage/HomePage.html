@@ -19,9 +19,18 @@
         <table cellpadding="0" cellspacing="0" border="0">
           <thead>
             <tr>
-              <th colspan="2">Contract Number</th>
-              <th colspan="2">Accomodation</th>
-              <th colspan="2">Is Active To</th>
+              <th
+                colspan="2"
+                onclick="sort_click(this,'contracts', 'contract_number')"
+              >
+                Contract Number
+              </th>
+              <th colspan="2" onclick="sort_click(this,'contracts', 'address')">
+                Accomodation
+              </th>
+              <th colspan="2" onclick="sort_click(this,'contracts', 'term')">
+                Is Active To
+              </th>
               <th colspan="3">
                 <button onclick="window.location.href='Create_Contract/'">
                   Add
@@ -72,10 +81,27 @@
         <table cellpadding="0" cellspacing="0" border="0">
           <thead>
             <tr>
-              <th colspan="3">Contract</th>
-              <th colspan="3">Payment number</th>
-              <th colspan="3">Sum</th>
-              <th colspan="5">Date</th>
+              <th
+                colspan="3"
+                onclick="sort_click(this,'payments', 'contract_number_id')"
+              >
+                Contract
+              </th>
+              <th
+                colspan="3"
+                onclick="sort_click(this,'payments', 'payment_id')"
+              >
+                Payment number
+              </th>
+              <th colspan="3" onclick="sort_click(this,'payments', 'summ')">
+                Sum
+              </th>
+              <th
+                colspan="5"
+                onclick="sort_click(this,'payments', 'pay_datetime')"
+              >
+                Date
+              </th>
               <th colspan="6">
                 <button onclick="window.location.href='Pay/'">Add</button>
               </th>
@@ -127,8 +153,12 @@
         <table cellpadding="0" cellspacing="0" border="0">
           <thead>
             <tr>
-              <th colspan="2">Type</th>
-              <th colspan="2">Discount percentage</th>
+              <th colspan="2" onclick="sort_click(this,'discounts', 'name')">
+                Type
+              </th>
+              <th colspan="2" onclick="sort_click(this,'discounts', 'pecent')">
+                Discount percentage
+              </th>
               <th colspan="2">
                 <button onclick="window.location.href='Add_Discount/'">
                   Add
@@ -172,12 +202,39 @@
         <table cellpadding="0" cellspacing="0" border="0">
           <thead>
             <tr>
-              <th colspan="2">Address</th>
-              <th colspan="1">Squeare</th>
-              <th colspan="1">consumed</th>
-              <th colspan="2">Last date</th>
-              <th colspan="1">Debt</th>
-              <th colspan="1">Prepayment</th>
+              <th
+                colspan="2"
+                onclick="sort_click(this,'accomodation', 'address')"
+              >
+                Address
+              </th>
+              <th
+                colspan="1"
+                onclick="sort_click(this,'accomodation', 'squeare')"
+              >
+                Squeare
+              </th>
+              <th
+                colspan="1"
+                onclick="sort_click(this,'accomodation', 'consumed')"
+              >
+                consumed
+              </th>
+              <th
+                colspan="2"
+                onclick="sort_click(this,'accomodation', 'date_in')"
+              >
+                Last date
+              </th>
+              <th colspan="1" onclick="sort_click(this,'accomodation', 'debt')">
+                Debt
+              </th>
+              <th
+                colspan="1"
+                onclick="sort_click(this,'accomodation', 'prepayment')"
+              >
+                Prepayment
+              </th>
               <th colspan="2">
                 <button onclick="window.location.href='Add_Accomodation/'">
                   Add
@@ -229,4 +286,7 @@
     </section>
   </section>
 </section>
+{% endblock %} {% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+<script type="text/javascript" src="{% static 'js/sorting_data.js' %}"></script>
 {% endblock %}
