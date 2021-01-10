@@ -32,7 +32,7 @@ table {
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
 th {
-  padding: 20px 15px;
+  padding: 20px 15px 15px 15px;
   text-align: left;
   font-weight: 500;
   font-size: 12px;
@@ -80,4 +80,45 @@ th > button {
   text-transform: uppercase;
   border: 1px solid rgba(255, 255, 255, 0.3);
   margin: 2px;
+}
+
+.input_search_box {
+  background-color: rgba(255, 255, 255, 0);
+  border: 0;
+  border-radius: 25px;
+  width: -webkit-fill-available;
+  padding: 0;
+  margin-top: 3px;
+  margin-bottom: 0;
+  position: relative;
+}
+
+.input_search {
+  background-color: rgba(255, 255, 255, 0.2);
+  font-weight: 450;
+  font-size: 13px;
+  color: rgb(12, 95, 49);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 25px;
+  width: -webkit-fill-available;
+  outline: none;
+  padding-left: 10px;
+  margin: 0;
+}
+
+.input_search_button {
+  background-color: rgba(0, 0, 0, 0);
+  /*content: "+";*/
+  cursor: pointer;
+
+  font-size: 17px;
+  transform: rotate(45deg);
+  position: absolute;
+  right: 12px;
+  padding: 0;
+  margin: 0;
+}
+
+.input_search_button:hover {
+  color: rgb(12, 95, 49);
 }
