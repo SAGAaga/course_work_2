@@ -43,9 +43,17 @@ class IndexView(LoginRequiredMixin, View):
         if contract_for_accomodation > 1:
             more_or_actually = 'more then one'
 
-        all_user_contracts = self.get_All_Contracts(request)['data']
+        all_user_contracts = self.get_All_Contracts(request)
+        term_data = all_user_contracts['term_data']
+        avg_squer = round(all_user_contracts['avg_squer'], 2)
+        all_user_contracts = all_user_contracts['data']
+
         all_user_payments = self.get_All_Payments(request)['data']
-        all_user_discounts = self.get_All_Discounts(request)['data']
+
+        all_user_discounts = self.get_All_Discounts(request)
+        disc_num = all_user_discounts['disc_num']
+        all_user_discounts = all_user_discounts['data']
+
         all_user_accomodation = self.get_All_Accomodation(request)['data']
         current_status = self.get_Editional_Status(request)['data']
 
@@ -55,6 +63,9 @@ class IndexView(LoginRequiredMixin, View):
         context = {
             'single_accomodation': contract_for_accomodation,
             'more_or_actually': more_or_actually,
+            'term_data': term_data,
+            'avg_squer': avg_squer,
+            'disc_num': disc_num,
             'all_user_contracts': all_user_contracts,
             'all_user_payments': all_user_payments,
             'all_user_discounts': all_user_discounts,

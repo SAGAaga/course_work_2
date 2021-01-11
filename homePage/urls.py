@@ -29,7 +29,6 @@ urlpatterns = [
          name='add_accomodation_url'),
     path('Transfer_new_data/', views.Transfer_new_data.as_view(),
          name='transfer_url'),
-
     path('All_Payments/<int:id>/Report/',
          views.Make_Payment_Report.as_view(), name='payment_report_url'),
     path('All_Contracts/<str:id>/Report/',
