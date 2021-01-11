@@ -3,6 +3,12 @@ let payments_section = document.getElementById("payments");
 let discounts_section = document.getElementById("discounts");
 let accomodation_section = document.getElementById("accomodation");
 
+let select_contracts_row = document.getElementById("select_contracts");
+let select_payments_row = document.getElementById("select_payments");
+let select_discounts_row = document.getElementById("select_discounts");
+let select_accomodation_row = document.getElementById("select_accomodation");
+
+
 function all_contracts_get(){
     let arr=[];
     let contract_rows=contracts_section.lastElementChild.firstElementChild.firstElementChild.children
@@ -99,6 +105,7 @@ let sort_by=function(arr,key){
     return arr;
 }
 
+//cheks event click on th
 let sort_click=function(elem, table, key){
     let section;
     let data;
@@ -147,7 +154,7 @@ let sort_click=function(elem, table, key){
 }
 
 
-
+//cheks input changed
 let filtering=function(elem,table){
     let section;
     let data;
@@ -191,4 +198,145 @@ let clear_input=function(elem){
     elem=elem.parentElement.firstElementChild;
     elem.value="";
     elem.onkeyup();
+    let row=elem.parentElement.parentElement.parentElement;
+    let table=row.id.split("_")[1];
+    row=row.children;
+    for(let i=0;i<row.length-1;++i){
+        let element=row[i].firstElementChild;
+        if(element.tagName=="SELECT"){
+            element.selectedIndex=0;
+            element.onchange(table)
+        }
+        else if(element.classList[0]=="date"){
+            element.firstElementChild.value="";
+            element.lastElementChild.value="";
+            element.lastElementChild.onchange(table)
+        }
+        else{
+            element.firstElementChild.value="";
+            element.lastElementChild.value="";
+            element.lastElementChild.onkeyup(table);
+        }
+    }
 }
+
+
+
+let select_text_fields=function(elem,data,key){
+    let value=elem.options[elem.selectedIndex].text;
+    if(value=="ALL"){
+        return data;
+    }
+    let res_data=[]
+    for(let i=0;i<data.length;++i){
+        if(data[i][key]==value){
+            res_data.push(data[i]);
+        }
+    }
+    return res_data;
+}
+
+let select_date=function(from,to,data,key){    
+    if(from==""&&to==""){
+        return data;
+    }
+    if(from==""){
+        //from= moment(-1).format('YYYY-MM-DD');
+        from=new Date(-1);
+    }
+    if(to==""){
+        //to= moment().add(100,"year").format('YYYY-MM-DD');
+        to=new Date(3000,1,1);
+    }
+    from=new Date(from);
+    to=new Date(to);
+    if(from>=to){
+        let temp=to;
+        to=from;
+        from=temp;
+    }
+    let res_data=[]
+    for(let i=0;i<data.length;++i){
+        if(data[i][key]>=from && data[i][key]<=to){
+            res_data.push(data[i]);
+        }
+    }
+    return res_data;
+}
+
+let select_number=function(from,to,data,key){    
+    if(from=="" && to==""){
+        return data;
+    }
+    if(from==""){
+        from=0;
+    }
+    if(to==""){
+        to=1000000;
+    }
+    from=parseInt(from);
+    to=parseInt(to);
+    if(from>=to){
+        let temp=to;
+        to=from;
+        from=temp;
+    }
+    let res_data=[]
+    for(let i=0;i<data.length;++i){
+        if(data[i][key]>=from && data[i][key]<=to){
+            res_data.push(data[i]);
+        }
+    }
+    return res_data;
+}
+
+let select_check=function(table){
+    let section,data,row;
+    if(table=="contracts"){
+        section=contracts_section;
+        data=all_contracts;
+        row=select_contracts_row;
+    }
+    else if(table=="payments"){
+        section=payments_section;
+        data=all_payments;
+        row=select_payments_row;
+    }
+    else if(table=="discounts"){
+        section=discounts_section;
+        data=all_discounts;
+        row=select_discounts_row;
+    }
+    else if(table=="accomodation"){
+        section=accomodation_section;
+        data=all_accomodation;
+        row=select_accomodation_row;
+    }
+    section.lastElementChild.firstElementChild.firstElementChild.remove();
+    row=row.children;
+    for(let i=0;i<row.length-1;++i){
+        let elem=row[i].firstElementChild;
+        if(elem.tagName=="SELECT"){
+            data=select_text_fields(elem,data,elem.name);
+        }
+        else if(elem.classList[0]=="date"){
+            let from=elem.firstElementChild.value;
+            let to=elem.lastElementChild.value;
+            data=select_date(from,to,data,elem.classList[1])
+        }
+        else{
+            let from=elem.firstElementChild.value;
+            let to=elem.lastElementChild.value;
+            data=select_number(from,to,data,elem.classList[0]);
+        }
+    }
+
+    let filtered_data=data
+    let tbody=document.createElement("tbody");
+
+    for(let i=0;i<filtered_data.length;i++){
+        tbody.appendChild(filtered_data[i]["row"]);
+    }
+    section.lastElementChild.firstElementChild.appendChild(tbody);
+}
+

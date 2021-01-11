@@ -6,10 +6,7 @@
   type="text/css"
 />
 {% endblock %} {% block content %}
-<div class="info">
-  In avarage one single accomodation has {{single_accomodation}} contracts, it
-  means that some accomodations has {{more_or_actually}} contract and owner
-</div>
+
 <section>
   <section class="row-section">
     <section class="table-section" id="contracts">
@@ -35,6 +32,38 @@
                 <button onclick="window.location.href='Create_Contract/'">
                   Add
                 </button>
+              </th>
+            </tr>
+            <tr id="select_contracts">
+              <th colspan="2">
+                <select
+                  name="contract_number"
+                  id=""
+                  onchange="select_check('contracts')"
+                ></select>
+              </th>
+              <th colspan="2">
+                <select
+                  name="address"
+                  id=""
+                  onchange="select_check('contracts')"
+                ></select>
+              </th>
+              <th colspan="2">
+                <div class="date term" style="display: flex">
+                  <input
+                    type="date"
+                    name="from"
+                    onchange="select_check('contracts')"
+                  />
+                  <input
+                    type="date"
+                    name="to"
+                    onchange="select_check('contracts')"
+                  />
+                </div>
+              </th>
+              <th colspan="3">
                 <div class="input_search_box">
                   <input
                     type="text"
@@ -114,6 +143,52 @@
               </th>
               <th colspan="6">
                 <button onclick="window.location.href='Pay/'">Add</button>
+              </th>
+            </tr>
+            <tr id="select_payments">
+              <th colspan="3">
+                <select
+                  name="contract_number_id"
+                  id=""
+                  onchange="select_check('payments')"
+                ></select>
+              </th>
+              <th colspan="3">
+                <select
+                  name="payment_id"
+                  id=""
+                  onchange="select_check('payments')"
+                ></select>
+              </th>
+              <th colspan="3">
+                <div class="summ" style="display: flex">
+                  <input
+                    type="number"
+                    name="from"
+                    onkeyup="select_check('payments')"
+                  />
+                  <input
+                    type="number"
+                    name="to"
+                    onkeyup="select_check('payments')"
+                  />
+                </div>
+              </th>
+              <th colspan="5">
+                <div class="date pay_datetime" style="display: flex">
+                  <input
+                    type="date"
+                    name="from"
+                    onchange="select_check('payments')"
+                  />
+                  <input
+                    type="date"
+                    name="to"
+                    onchange="select_check('payments')"
+                  />
+                </div>
+              </th>
+              <th colspan="6">
                 <div class="input_search_box">
                   <input
                     type="text"
@@ -183,6 +258,31 @@
                 <button onclick="window.location.href='Add_Discount/'">
                   Add
                 </button>
+              </th>
+            </tr>
+            <tr id="select_discounts">
+              <th colspan="2">
+                <select
+                  name="name"
+                  id=""
+                  onchange="select_check('discounts')"
+                ></select>
+              </th>
+              <th colspan="2">
+                <div class="pecent" style="display: flex">
+                  <input
+                    type="number"
+                    name="from"
+                    onkeyup="select_check('discounts')"
+                  />
+                  <input
+                    type="number"
+                    name="to"
+                    onkeyup="select_check('discounts')"
+                  />
+                </div>
+              </th>
+              <th colspan="2">
                 <div class="input_search_box">
                   <input
                     type="text"
@@ -269,6 +369,87 @@
                 <button onclick="window.location.href='Add_Accomodation/'">
                   Add
                 </button>
+              </th>
+            </tr>
+            <tr id="select_accomodation">
+              <th colspan="2">
+                <select
+                  name="address"
+                  id=""
+                  onchange="select_check('accomodation')"
+                ></select>
+              </th>
+              <th colspan="1">
+                <div class="squeare" style="display: flex">
+                  <input
+                    type="number"
+                    name="from"
+                    onkeyup="select_check('accomodation')"
+                  />
+                  <input
+                    type="number"
+                    name="to"
+                    onkeyup="select_check('accomodation')"
+                  />
+                </div>
+              </th>
+              <th colspan="1">
+                <div class="consumed" style="display: flex">
+                  <input
+                    type="number"
+                    name="from"
+                    onkeyup="select_check('accomodation')"
+                  />
+                  <input
+                    type="number"
+                    name="to"
+                    onkeyup="select_check('accomodation')"
+                  />
+                </div>
+              </th>
+              <th colspan="2">
+                <div class="date date_in" style="display: flex">
+                  <input
+                    type="date"
+                    name="from"
+                    onchange="select_check('accomodation')"
+                  />
+                  <input
+                    type="date"
+                    name="to"
+                    onchange="select_check('accomodation')"
+                  />
+                </div>
+              </th>
+              <th colspan="1">
+                <div class="debt" style="display: flex">
+                  <input
+                    type="number"
+                    name="from"
+                    onkeyup="select_check('accomodation')"
+                  />
+                  <input
+                    type="number"
+                    name="to"
+                    onkeyup="select_check('accomodation')"
+                  />
+                </div>
+              </th>
+              <th colspan="1">
+                <div class="prepayment" style="display: flex">
+                  <input
+                    type="number"
+                    name="from"
+                    onkeyup="select_check('accomodation')"
+                  />
+                  <input
+                    type="number"
+                    name="to"
+                    onkeyup="select_check('accomodation')"
+                  />
+                </div>
+              </th>
+              <th colspan="2">
                 <div class="input_search_box">
                   <input
                     type="text"
@@ -326,7 +507,104 @@
     </section>
   </section>
 </section>
+
+<div class="info">
+  In avarage one single accomodation has {{single_accomodation}} contracts, it
+  means that some accomodations has {{more_or_actually}} contract and owner
+</div>
+<div class="info">In current month the term of {{term_data}} contracts finish.</в>
+<div class="info">
+  The evarage squere of accomodation with more then 1 owner is eqvel to
+  {{avg_squer}} M^2
+</div>
+<div class="info">{{disc_num}} percent of users have discounts.</div>
 {% endblock %} {% block scripts %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 <script type="text/javascript" src="{% static 'js/sorting_data.js' %}"></script>
+<script>
+
+
+  let select_sort=function(arr){
+      arr=Array.from(arr);
+      let all="ALL";
+      for(let i=0;i<arr.length-1;++i){
+          for(let j=0;j<arr.length-1-i;++j){
+              if(arr[j]>arr[j+1]){
+                  let temp=arr[j];
+                  arr[j]=arr[j+1];
+                  arr[j+1]=temp;
+              }
+          }
+      }
+      arr.unshift(all);
+      return arr;
+  }
+      let select_data={};
+      select_data["contracts"]={}
+      select_data["contracts"]["contract_number"]=new Set();
+      select_data["contracts"]["address"]=new Set();
+      {% for contract in all_user_contracts %}
+          select_data["contracts"]["contract_number"].add("{{ contract.contract_number }}");
+          select_data["contracts"]["address"].add("{{ contract.accomodation.address }}");
+      {% endfor %}
+      select_data["contracts"]["contract_number"]=select_sort(select_data["contracts"]["contract_number"]);
+      select_data["contracts"]["address"]=select_sort(select_data["contracts"]["address"]);
+
+
+
+      select_data["payments"]={}
+      select_data["payments"]["contract_number_id"]=new Set();
+      select_data["payments"]["payment_id"]=new Set();
+      {% for payment in all_user_payments %}
+          select_data["payments"]["contract_number_id"].add("{{ payment.contract_number_id }}");
+          select_data["payments"]["payment_id"].add("{{ payment.payment_id }}");
+      {% endfor %}
+      select_data["payments"]["contract_number_id"]=select_sort(select_data["payments"]["contract_number_id"]);
+      select_data["payments"]["payment_id"]=select_sort(select_data["payments"]["payment_id"]);
+
+
+
+      select_data["discounts"]={}
+      select_data["discounts"]["name"]=new Set();
+      {% for discount in all_user_discounts %}
+          select_data["discounts"]["name"].add("{{discount.name}}");
+      {% endfor %}
+      select_data["discounts"]["name"]=select_sort(select_data["discounts"]["name"]);
+
+
+
+      select_data["accomodation"]={}
+      select_data["accomodation"]["address"]=new Set();
+      {% for accomodation,status in all_user_accomodation_status %}
+          select_data["accomodation"]["address"].add("{{ accomodation.address }}")
+      {% endfor %}
+      if(select_data["accomodation"]["address"].size==0){
+        for(let i=0;i<all_accomodation.length;++i){
+          select_data["accomodation"]["address"].add(all_accomodation[i]["address"]);
+        }
+      }
+      select_data["accomodation"]["address"]=select_sort(select_data["accomodation"]["address"]);
+
+
+
+      window.addEventListener("load",function(){
+        let row_data=[select_contracts_row, select_payments_row, select_discounts_row, select_accomodation_row];
+        for(let t=0;t<4;++t){
+            let row=row_data[t].children;
+            for(let j=0;j<row.length-1;++j){
+                let element=row[j].firstElementChild;
+                if(element.tagName=="SELECT"){
+                    let table=element.parentElement.parentElement.id.split("_")[1];
+                    let key=element.name;
+                    for(let i=0;i<select_data[table][key].length;++i){
+                        let opt=document.createElement("option")
+                        opt.text=select_data[table][key][i];
+                        element.appendChild(opt)
+                    }
+                    element.selectedIndex=0;
+                }
+            }
+        }
+    });
+</script>
 {% endblock %}
