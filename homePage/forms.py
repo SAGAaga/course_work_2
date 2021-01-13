@@ -20,17 +20,25 @@ class Pay_form(ModelForm):
             commit=False, *args, **kwargs)
         status = boundform.contract_number.accomodation.status_set.all().order_by(
             "date_in").last()
-        debt = status.debt
-        prepayment = status.prepayment
+        if status:
+            debt = status.debt
+            prepayment = status.prepayment
+            consumed = status.consumed
+        else:
+            debt = 0
+            prepayment = 0
+            consumed = 0
+
         if debt <= boundform.summ:
             prepayment += boundform.summ-debt
             debt = 0
         else:
             debt -= boundform.summ
 
-        new_status = Status(consumed=status.consumed, debt=debt, prepayment=prepayment,
+        new_status = Status(consumed=consumed, debt=debt, prepayment=prepayment, date_in=datetime.now(),
                             accomodation_id=boundform.contract_number.accomodation)
         new_status.save()
+        boundform.save()
         return boundform
 
     class Meta:
